@@ -12,11 +12,17 @@
 <body>
     <a href="http://jquery.com/">jQuery</a>
     <p id='button'> Hide </p>
+    <iframe src="http://techcrunch.com"></iframe>
+
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <script>
-    
+
+    var $j = jQuery.noConflict();
+
     // Your code goes here.
-    $(document).ready(function(){
+    $j(document).ready(function($){
+        console.log( "document loaded" );
+        //handle click event
         $("a").click(function(event){
             if ($('a').hasClass('test')) {
                 $('a').removeClass('test');
@@ -27,6 +33,18 @@
             }
             event.preventDefault();
         });
+
+        console.log("a.href: "+$('a').attr('href'));
+        //set attributes
+        $('a').attr({
+            href:'http://news.sina.com.cn',
+            title: "sina link"
+        });
+        console.log('after change: '+$('a').attr('href'));
+    });
+
+    $(window).on('load',function(){
+        console.log( "window  loaded");
     });
  
     </script>
