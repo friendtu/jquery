@@ -3,16 +3,28 @@
 <head>
     <meta charset="utf-8">
     <title>Demo</title>
+    <style>
+        a.test {
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
     <a href="http://jquery.com/">jQuery</a>
+    <p id='button'> Hide </p>
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <script>
- 
+    
     // Your code goes here.
     $(document).ready(function(){
         $("a").click(function(event){
-            alert("it's clicked");
+            if ($('a').hasClass('test')) {
+                $('a').removeClass('test');
+                $('#button').show('slow');
+            } else {
+                $('a').addClass('test');
+                $('#button').hide('slow');
+            }
             event.preventDefault();
         });
     });
