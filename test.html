@@ -10,20 +10,53 @@
     </style>
 </head>
 <body>
-    <a href="http://jquery.com/">jQuery</a>
+    <a name="link" href="http://jquery.com/">jQuery</a>
     <p id='button'> Hide </p>
+    <ul>
+        <li id="foo">foo</li>
+        <li id="bar">bar</li>
+    </ul>
+
+    <div class="grandparent">
+        <div class="parent">
+            <div class="child">
+                <span class="subchild"></span>
+            </div>
+        </div>
+        <div class="surrogateParent1"></div>
+        <div class="surrogateParent2"></div>
+    </div>
+
+    
+    <input id="check1" type="checkbox" checked="checked">checkbox</input>
+    <p id="pofinput"></p>
+
+    <select id="myselect">
+        <option value="1">Mr</option>
+        <option value="2">Mrs</option>
+        <option value="3">Ms</option>
+        <option value="4">Dr</option>
+        <option value="5">Prof</option>
+    </select>
+
     <iframe src="http://techcrunch.com"></iframe>
 
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <script>
 
-    var $j = jQuery.noConflict();
+    //var $j = jQuery.noConflict();
 
     // Your code goes here.
-    $j(document).ready(function($){
+    $(document).ready(function($){
         console.log( "document loaded" );
         //handle click event
-        $("a").click(function(event){
+        var linka=$("body a[name='link']");
+        console.log(linka);
+        if (linka.length>0) {
+            alert("has a with link under body");
+        };
+
+        $("a[name='link']").click(function(event){
             if ($('a').hasClass('test')) {
                 $('a').removeClass('test');
                 $('#button').show('slow');
@@ -31,8 +64,10 @@
                 $('a').addClass('test');
                 $('#button').hide('slow');
             }
+
             event.preventDefault();
         });
+        console.log('keyName: '+ $('a').data('keyName').foo);
 
         console.log("a.href: "+$('a').attr('href'));
         //set attributes
@@ -41,12 +76,53 @@
             title: "sina link"
         });
         console.log('after change: '+$('a').attr('href'));
+
+        console.log($('span.subchild').closest('div')[0].tagName);
+        $('span.subchild').parents().each(function(index,elem){
+            console.log(this===elem);
+            console.log(index + " :" + elem.tagName);
+        });
+
     });
 
     $(window).on('load',function(){
         console.log( "window  loaded");
     });
- 
+
+
+    $('a').data("keyName", { foo: "bar" });
+
+    var myFunction=function(){
+        console.log(this);
+    };
+
+    var myObject = {
+        foo: "bar"
+    };
+
+    var myProxy=$.proxy(myFunction,myObject);
+    myProxy();
+
+    console.log("index of div.surrogateParent1: "+$('div.surrogateParent1').index());
+    console.log("id of index: "+ $('li').index('li'));
+
+    $('#check1').change(function(){
+        var $input=$(this);
+        $('#pofinput').html(
+        ".attr( \"checked\" ): <b>" + $input.attr( "checked" ) + "</b><br>" +
+        ".prop( \"checked\" ): <b>" + $input.prop( "checked" ) + "</b><br>" +
+        ".is  ( \"checked\" ): <b>" + $input.is  (":checked" ) + "</b><br>" 
+        );
+    }).change();
+
+    $('#myselect').change(function(){
+        var $myselect=$(this);
+        $("li").eq(1).text($("#myselect option:selected").text());
+        console.log("$myselect: "+$myselect.val());
+        console.log("slected text: "+ $("#myselect option:selected").text());
+    });
     </script>
+
+
 </body>
 </html>
